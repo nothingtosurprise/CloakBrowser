@@ -6,6 +6,10 @@ Changes are tagged: **[wrapper]** for Python/JS wrapper, **[binary]** for Chromi
 
 ---
 
+## [0.4.2] — 2026-06-23
+
+- **[wrapper]** macOS Pro licenses now fall back to the free binary (macOS Pro build coming) instead of failing to launch. Transient and signature-verification failures still hard-fail. Python and JS.
+
 ## [0.4.1] — 2026-06-23
 
 - **[wrapper]** Humanize: fix "Viewport size not available" crash on headed launches. Headed mode defaults to `no_viewport` (since 0.4.0), so `page.viewport_size` is `None` — human scroll now falls back to the live `window.innerWidth`/`window.innerHeight`. Covers Playwright (Python sync/async, JS) and Puppeteer.

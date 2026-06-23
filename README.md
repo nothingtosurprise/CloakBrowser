@@ -140,7 +140,7 @@ page.goto("https://example.com")
 
 ---
 
-## Latest: v0.4.1 — CloakBrowser Pro (Chromium 148.0.7778.215.2)
+## Latest: v0.4.2 — CloakBrowser Pro (Chromium 148.0.7778.215.2)
 
 - **CloakBrowser Pro** — the latest binary (Chromium 148.0.7778.215.2, 59 source-level patches) is now available to Pro subscribers; v146 stays free forever. Set a `license_key` (`licenseKey` in JS) or the `CLOAKBROWSER_LICENSE_KEY` env var and the wrapper fetches the latest build automatically. See [CloakBrowser Pro](#cloakbrowser-pro)
 - **58 fingerprint patches** — rendering consistency improvements across Linux and Windows, corrected GPU/display/graphics parameters to match stock Chrome 146 profiles
