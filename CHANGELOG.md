@@ -8,6 +8,10 @@ Changes are tagged: **[wrapper]** for Python/JS wrapper, **[binary]** for Chromi
 
 ## [Unreleased]
 
+## [0.4.7] — 2026-07-02
+
+- **[docker]** Update the public `cloaktest` suite to use free-tier-stable bot-detection checks while Pro continues to verify reCAPTCHA v3 at 0.9. The Docker smoke test now runs Sannysoft, Incolumitas, Rebrowser, deviceandbrowserinfo, BrowserScan, and CreepJS lies/noise=false; FingerprintJS and reCAPTCHA v3 are no longer hard-pass checks for the free v146 image.
+
 ## [0.4.6] — 2026-07-02
 
 - **[wrapper]** The resolved Pro license key is now passed to the browser process at launch (via `CLOAKBROWSER_LICENSE_KEY`) so the Pro binary can authenticate itself, including when you supply a custom `env`. Fixes launch failures on the newest Pro binaries. Python, JS, and .NET.
