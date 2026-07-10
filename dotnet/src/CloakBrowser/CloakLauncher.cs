@@ -26,7 +26,7 @@ public static class CloakLauncher
         string binaryPath = await Download.EnsureBinaryAsync(options.LicenseKey, options.BrowserVersion).ConfigureAwait(false);
         var (timezone, locale, exitIp) = await MaybeResolveGeoIpAsync(
             options.GeoIp, options.Proxy, options.Timezone, options.Locale).ConfigureAwait(false);
-        var proxyResolution = ProxyResolver.Resolve(options.Proxy, options.BrowserVersion);
+        var proxyResolution = ProxyResolver.Resolve(options.Proxy, options.BrowserVersion, options.LicenseKey);
         var args = await ResolveWebRtcArgsAsync(options.Args, options.Proxy).ConfigureAwait(false);
         args = MaybeAppendWebRtcExitIp(args, exitIp);
 
@@ -136,7 +136,7 @@ public static class CloakLauncher
         string binaryPath = await Download.EnsureBinaryAsync(options.LicenseKey, options.BrowserVersion).ConfigureAwait(false);
         var (timezone, locale, exitIp) = await MaybeResolveGeoIpAsync(
             options.GeoIp, options.Proxy, options.Timezone, options.Locale).ConfigureAwait(false);
-        var proxyResolution = ProxyResolver.Resolve(options.Proxy, options.BrowserVersion);
+        var proxyResolution = ProxyResolver.Resolve(options.Proxy, options.BrowserVersion, options.LicenseKey);
         var args = await ResolveWebRtcArgsAsync(options.Args, options.Proxy).ConfigureAwait(false);
         args = MaybeAppendWebRtcExitIp(args, exitIp);
 

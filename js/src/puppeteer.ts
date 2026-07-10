@@ -10,11 +10,12 @@ import {
   DEFAULT_VIEWPORT,
   IGNORE_DEFAULT_ARGS,
   binarySupportsHeadlessNoViewport,
+  binarySupportsHttpProxyInlineAuth,
 } from "./config.js";
 import { buildArgs } from "./args.js";
 import { maybeWarnWindowsFonts } from "./fonts.js";
 import { ensureBinary } from "./download.js";
-import { isSocksProxy, normalizeHttpStringUrl, parseProxyUrl, reconstructHttpUrl, resolveProxyConfig, supportsHttpProxyInlineAuth } from "./proxy.js";
+import { isSocksProxy, normalizeHttpStringUrl, parseProxyUrl, reconstructHttpUrl, resolveProxyConfig } from "./proxy.js";
 import { maybeResolveGeoip, resolveWebrtcArgs, appendWebrtcExitIp } from "./geoip.js";
 import { buildLaunchEnv } from "./license.js";
 import { seedWidevineHint } from "./widevine.js";
@@ -60,8 +61,9 @@ async function resolveArgs(options: LaunchOptions): Promise<{ binaryPath: string
 /**
  * Resolve proxy into Chrome CLI args and optional HTTP auth credentials.
  * SOCKS5: Chrome handles inline credentials natively (RFC 1929 auth).
- * HTTP on supported platforms: inline credentials via --proxy-server.
- * HTTP on unsupported platforms: strip credentials, use page.authenticate() fallback.
+ * HTTP on binaries with inline proxy auth: inline credentials via --proxy-server.
+ * HTTP on older binaries (free macOS/linux-arm64): strip credentials, use
+ * page.authenticate() fallback.
  */
 function resolveProxy(options: LaunchOptions, args: string[]): { username: string; password: string } | undefined {
   if (!options.proxy) return undefined;
@@ -72,8 +74,8 @@ function resolveProxy(options: LaunchOptions, args: string[]): { username: strin
     return undefined;
   }
 
-  // On supported platforms: pass full URL with inline creds to --proxy-server
-  if (supportsHttpProxyInlineAuth()) {
+  // On binaries that ship inline proxy auth: pass full URL with inline creds.
+  if (binarySupportsHttpProxyInlineAuth(options.licenseKey, options.browserVersion)) {
     if (typeof options.proxy === "string") {
       args.push(`--proxy-server=${normalizeHttpStringUrl(options.proxy)}`);
       return undefined;
@@ -88,7 +90,7 @@ function resolveProxy(options: LaunchOptions, args: string[]): { username: strin
     return undefined;
   }
 
-  // Unsupported platform: strip credentials, fall back to page.authenticate()
+  // Older binary: strip credentials, fall back to page.authenticate()
   if (typeof options.proxy === "string") {
     const { server, username, password } = parseProxyUrl(options.proxy);
     args.push(`--proxy-server=${server}`);
@@ -105,7 +107,7 @@ function resolveProxy(options: LaunchOptions, args: string[]): { username: strin
   return username ? { username, password: password ?? "" } : undefined;
 }
 
-/** Apply proxy auth fallback (unsupported platforms) and humanize patching. */
+/** Apply proxy auth fallback (older binaries) and humanize patching. */
 async function applyPostLaunch(
   browser: Browser,
   options: LaunchOptions,

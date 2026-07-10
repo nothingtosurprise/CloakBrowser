@@ -8,6 +8,8 @@ Changes are tagged: **[wrapper]** for Python/JS wrapper, **[binary]** for Chromi
 
 ## [Unreleased]
 
+- **[wrapper]** Authenticated HTTP/HTTPS proxies now use the browser's native proxy authentication on every platform whose binary supports it — resolved per platform and binary version — and fall back to the standard proxy path on older binaries that don't. Fixes credentialed HTTP/HTTPS proxies on macOS and ARM, which previously could not use the native path. Python, JavaScript, Puppeteer, and .NET.
+
 ## [0.4.10] — 2026-07-09
 
 - **[wrapper]** Fix JS CLI silently exiting with no output when run via `npx`/`node_modules/.bin` (#427). The entry-point guard compared `import.meta.url` to an unresolved `process.argv[1]`; symlinked bin installs (npm/pnpm/npx) never matched, so no subcommand ran. Now realpath-resolves the invoked path before comparing.

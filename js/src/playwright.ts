@@ -114,7 +114,7 @@ export async function buildLaunchOptions(
     process.env.CLOAKBROWSER_BINARY_PATH ||
     (await ensureBinary(options.licenseKey, options.browserVersion));
   const { exitIp, ...resolved } = await maybeResolveGeoip(options);
-  const { proxyOption, proxyArgs } = resolveProxyConfig(options.proxy, options.browserVersion);
+  const { proxyOption, proxyArgs } = resolveProxyConfig(options.proxy, options.browserVersion, options.licenseKey);
   let resolvedArgs = await resolveWebrtcArgs(options);
   resolvedArgs = appendWebrtcExitIp(resolvedArgs, exitIp);
   const args = buildArgs({ ...options, ...resolved, args: [...(resolvedArgs ?? []), ...proxyArgs] });
@@ -296,7 +296,7 @@ export async function launchPersistentContext(
     process.env.CLOAKBROWSER_BINARY_PATH ||
     (await ensureBinary(options.licenseKey, options.browserVersion));
   const { exitIp, ...resolved } = await maybeResolveGeoip(options);
-  const { proxyOption, proxyArgs } = resolveProxyConfig(options.proxy, options.browserVersion);
+  const { proxyOption, proxyArgs } = resolveProxyConfig(options.proxy, options.browserVersion, options.licenseKey);
   let resolvedArgs = await resolveWebrtcArgs(options);
   resolvedArgs = appendWebrtcExitIp(resolvedArgs, exitIp);
   const args = buildArgs({ ...options, ...resolved, args: [...(resolvedArgs ?? []), ...proxyArgs] });
